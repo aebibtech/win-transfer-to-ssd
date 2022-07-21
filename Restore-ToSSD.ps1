@@ -32,7 +32,7 @@ function Get-DriveLetter {
 
 # Check for Empty Disk
 function Get-SSD {
-    $disk = Get-PhysicalDisk | Where-Object -Property MediaType -EQ -Value "SSD"
+    $disk = Get-Disk | Where-Object -Property PartitionStyle -EQ -Value "RAW"
     
     if (!$disk) {
         Write-Host
