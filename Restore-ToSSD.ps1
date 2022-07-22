@@ -95,6 +95,31 @@ function Initialize-SSD {
     return $firmType
 }
 
+function Set-Mountpoint {
+    $SYSHIVE = "T:\Windows\System32\config\SYSTEM"
+    Write-Output "Loading Offline registry from: ${SYSHIVE}"
+    cmd /c reg load "HKLM\1" $SYSHIVE
+    Start-Sleep -Seconds 2
+
+    Write-Output "Fixing mountpoint..."
+    $old_value = Get-ItemProperty -Path "HKLM:\1\MountedDevices" -Name "\DosDevices\C:"
+    Write-Warning -Message "Previous Mountpoint -> " $( Format-Hex -InputObject $old_value.'\DosDevices\C:' )
+    
+    $ssd_mount = Get-ItemProperty -Path "HKLM:\SYSTEM\MountedDevices" -Name "\DosDevices\T:"
+    Set-ItemProperty -Path "HKLM:\1\MountedDevices" -Name "\DosDevices\C:" -Value $ssd_mount.'\DosDevices\T:'
+
+    $NEW_C = Get-ItemProperty -Path "HKLM:\1\MountedDevices" -Name "\DosDevices\C:"
+    $new_value = Format-Hex -InputObject $NEW_C.'\DosDevices\C:'
+    Write-Output "New C: Mountpoint for SSD -> ${new_value}"
+
+    Get-Variable Registry* | Remove-Variable
+    [gc]::collect()
+    Start-Sleep -Seconds 3
+
+    Write-Output "Unloading Offline registry..."
+    cmd /c reg unload "HKLM\1"
+}
+
 function Restore-Windows {
     $firmType = Initialize-SSD
     $DRV_LETTER = Get-DriveLetter
@@ -104,7 +129,7 @@ function Restore-Windows {
 
     Write-Host ""
     Write-Host "Restoring Windows to SSD. . ." -ForegroundColor Yellow
-    cmd /c Dism.exe /Apply-Image /ImageFile:$IMGFILE /index:1 /ApplyDir:T:\
+    cmd /c Dism.exe /Apply-Image /ImageFile:$IMGFILE /index:1 /ApplyDir:T:\ /norpfix
 
     Write-Host ""
     Write-Host "Running bcdboot " $firmType.ToUpper()
@@ -115,6 +140,8 @@ function Restore-Windows {
     } else {
         cmd /c bcdboot.exe $WINOS /s T: /f BIOS /v
     }
+
+    Set-Mountpoint
 
     Write-Host ""
     Write-Host "Done!"

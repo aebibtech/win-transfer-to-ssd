@@ -35,7 +35,7 @@ if(!(Test-Path "${DRV_LETTER}:\os.wim")) {
     Write-Host
     Write-Host "Capturing Current OS to ${DRV_LETTER}:\os.wim"
     
-    cmd /c Dism.exe /Capture-Image /ImageFile:"${DRV_LETTER}:\os.wim" /CaptureDir:"${DRV_LETTER}:\" /Name:"Backup Existing Install" /ConfigFile:"${ROOT_PATH}\wimscript.ini /compress:none /norpfix"
+    cmd /c Dism.exe /Capture-Image /ImageFile:"${DRV_LETTER}:\os.wim" /CaptureDir:"${DRV_LETTER}:\" /Name:"Backup Existing Install" /ConfigFile:"${ROOT_PATH}\wimscript.ini" /compress:none
 }
 
 if(Test-Path "${DRV_LETTER}:\os.wim") {
