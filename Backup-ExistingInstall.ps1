@@ -1,6 +1,7 @@
 ﻿# Backup-ExistingInstall.ps1
 # Author: Paul Abib S. Camano
 # Backup an existing Windows install to a WIM file.
+#Requires -RunAsAdministrator
 
 # Drive Letters for finding a Windows install
 $letter = @(

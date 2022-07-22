@@ -1,6 +1,7 @@
 ﻿# Restore-ToSSD.ps1
 # Author: Paul Abib S. Camano
 # Restores an os.wim file to a new SSD. 
+#Requires -RunAsAdministrator
 
 # Look for os.wim in all drives.
 function Get-DriveLetter {
