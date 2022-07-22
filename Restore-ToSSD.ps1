@@ -86,18 +86,18 @@ function Initialize-SSD {
 
 function Restore-Windows {
     $firmType = Initialize-SSD
-    $ROOT_PATH = $PSScriptRoot.Remove($PSScriptRoot.Length - 1)
-    $WINNT_SETUP = "${ROOT_PATH}\Aebibtech-Installer\win10\WinNTSetup_x64.exe"
     $DRV_LETTER = Get-DriveLetter
-    $PARAMS = "/source:${DRV_LETTER}:\os.wim /wimindex:1"
+    $IMGFILE = "${DRV_LETTER}:\os.wim"
 
     Write-Host ""
     Write-Host "Restoring Windows to SSD. . ." -ForegroundColor Yellow
 
+    cmd /c Dism.exe /Apply-Image /ImageFile:$IMGFILE /index:1 /ApplyDir:T:\
+
     if ($firmType -eq "Uefi") {
-        Start-Process -FilePath $WINNT_SETUP -ArgumentList "NT6 ${PARAMS} /syspart:B: /tempdrive:T: /nobootsect /bcd:UEFI /setup"
+        cmd /c bcdboot.exe T:\Windows /s B: /f UEFI /v
     } else {
-        Start-Process -FilePath $WINNT_SETUP -ArgumentList "NT6 ${PARAMS} /syspart:T: /tempdrive:T: /bcd:BIOS /setup"
+        cmd /c bcdboot.exe T:\Windows /s T: /f BIOS /v
     }
 
     Write-Host ""
