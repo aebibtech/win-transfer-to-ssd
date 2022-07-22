@@ -120,7 +120,7 @@ function Restore-Windows {
 }
 
 Write-Host "Aebibtech Restore to SSD" -ForegroundColor Green
-Write-Host "Starting restore process. . ."
+Write-Host "Starting restore process. . ." -ForegroundColor Green
 Write-Host
 
 # Call WinNTSetup
