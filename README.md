@@ -1,5 +1,5 @@
 # Transfer Windows to new SSD
-Transfers an existing Windows installation to an empty SSD. This is useful for people who are adding a Solid State Disk with an existing HDD.
+Transfers an existing Windows installation to an empty SSD. This is useful for people who are adding a Solid State Disk with an existing HDD. These scripts utilize `DISM` and `bcdboot`.
 
 ## Usage
 1. Clone this repo. Put it in your WinPE boot disk (or Windows Install USB disk).
@@ -9,7 +9,7 @@ Transfers an existing Windows installation to an empty SSD. This is useful for p
 ## What do these scripts do?
 1. Create an image of an existing Windows install.
 2. **User Shell Folders (Desktop, Documents, Downloads, etc.)** are excluded from the image.
-3. Initialize an empty disk. (Disks with partition style of RAW)
+3. Initialize an empty disk (Disks with partition style of RAW) to either `GPT` or `MBR`, depending on the firmware type `(BIOS or UEFI)`. 
 4. Apply the image that was previously created to the empty disk.
 5. Run `bcdboot.exe`.
 
