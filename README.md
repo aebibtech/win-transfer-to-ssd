@@ -4,7 +4,8 @@ Transfers an existing Windows installation to an empty SSD. This is useful for p
 ## Usage
 1. Clone this repo. Put it in your WinPE boot disk (or Windows Install USB disk).
 2. Boot into WinPE. For a Windows Install USB disk, press `Shift F10` at the same time when the Windows install screen appears.
-3. Run `main.cmd`.
+3. `cd` to the directory of this repo on the USB disk.
+4. Run `main.cmd`.
 
 ## What do these scripts do?
 1. Create an image of an existing Windows install.
