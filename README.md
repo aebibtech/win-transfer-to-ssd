@@ -16,3 +16,8 @@ Transfers an existing Windows installation to an empty SSD. This is useful for p
 
 ## Notes
 You can customize what directories are to be excluded from the image by modifying the `wimscript.ini` file. Refer to Microsoft's [documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-configuration-list-and-wimscriptini-files-winnext?view=windows-11).
+
+### Did you find this useful?
+Buy me a coffee  
+[![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/aebibtech)
+
