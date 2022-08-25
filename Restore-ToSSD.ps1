@@ -120,6 +120,30 @@ function Set-Mountpoint {
     cmd /c reg unload "HKLM\1"
 }
 
+function Get-OldEFI {
+    $drv = Get-DriveLetter
+    $dsk = $null
+    $efi = $null
+    if($drv) {
+        $dsk = (Get-Partition | Where-Object -Property DriveLetter -EQ $drv).DiskNumber
+    }
+
+    if($dsk) {
+        $efi = Get-Partition | Where-Object {$_.DiskNumber -EQ $dsk -and $_.IsSystem}
+    }
+    return $efi
+}
+
+function Remove-OldEFI {
+    $efi = Get-OldEFI
+    
+    if($efi) {
+        Remove-Partition -InputObject $efi
+        return 0
+    }
+    return 1
+}
+
 function Restore-Windows {
     $firmType = Initialize-SSD
     $DRV_LETTER = Get-DriveLetter
@@ -137,6 +161,9 @@ function Restore-Windows {
     Write-Host "Boot Drive on " $BOOT
     if ($firmType -eq "Uefi") {
         cmd /c bcdboot.exe $WINOS /s $BOOT /f UEFI /v
+        if ( Test-Path $WINOS\write.exe ) {
+            Remove-OldEFI
+        }
     } else {
         cmd /c bcdboot.exe $WINOS /s T: /f BIOS /v
     }
